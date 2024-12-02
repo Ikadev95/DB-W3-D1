@@ -1,0 +1,87 @@
+-- Table: public.clienti
+
+-- DROP TABLE IF EXISTS public.clienti;
+
+CREATE TABLE IF NOT EXISTS public.clienti
+(
+    id_cliente integer NOT NULL DEFAULT nextval('clienti_id_cliente_seq'::regclass),
+    nome character varying COLLATE pg_catalog."default" NOT NULL,
+    cognome character varying COLLATE pg_catalog."default" NOT NULL,
+    anno_di_nascita date NOT NULL,
+    regione_residenza character varying COLLATE pg_catalog."default",
+    CONSTRAINT clienti_pkey PRIMARY KEY (id_cliente)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.clienti
+    OWNER to postgres;
+
+
+----------------------------------------------------------------------------------
+
+
+-- Table: public.fatture
+
+-- DROP TABLE IF EXISTS public.fatture;
+
+CREATE TABLE IF NOT EXISTS public.fatture
+(
+    id_fattura integer NOT NULL DEFAULT nextval('fatture_id_fattura_seq'::regclass),
+    tipologia character varying COLLATE pg_catalog."default" NOT NULL,
+    importo double precision NOT NULL,
+    iva character varying COLLATE pg_catalog."default" NOT NULL,
+    id_cliente integer NOT NULL,
+    data_fattura date NOT NULL,
+    id_fornitore integer NOT NULL,
+    CONSTRAINT fatture_pkey PRIMARY KEY (id_fattura)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.fatture
+    OWNER to postgres;
+
+
+
+----------------------------------------------------------------------------------
+
+-- Table: public.fornitori
+
+-- DROP TABLE IF EXISTS public.fornitori;
+
+CREATE TABLE IF NOT EXISTS public.fornitori
+(
+    id_fornitore integer NOT NULL DEFAULT nextval('fornitori_id_fornitore_seq'::regclass),
+    denominazione character varying COLLATE pg_catalog."default" NOT NULL,
+    regione_residenza character varying COLLATE pg_catalog."default",
+    CONSTRAINT fornitori_pkey PRIMARY KEY (id_fornitore)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.fornitori
+    OWNER to postgres;
+
+-------------------------------------------------------------------------------------------------
+
+
+-- Table: public.prodotti
+
+-- DROP TABLE IF EXISTS public.prodotti;
+
+CREATE TABLE IF NOT EXISTS public.prodotti
+(
+    id_prodotto integer NOT NULL DEFAULT nextval('prodotti_id_prodotto_seq'::regclass),
+    descrizione character varying COLLATE pg_catalog."default" NOT NULL,
+    in_produzione integer DEFAULT 0,
+    in_commercio integer DEFAULT 0,
+    data_attivazione date,
+    data_disattivazione date,
+    CONSTRAINT prodotti_pkey PRIMARY KEY (id_prodotto)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.prodotti
+    OWNER to postgres;

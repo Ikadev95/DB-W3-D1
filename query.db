@@ -1,0 +1,19 @@
+-- estrai tutti i clienti con nome Mario
+SELECT id_cliente, nome, cognome, anno_di_nascita, regione_residenza
+	FROM clienti where nome = 'Mario';
+-- estrai nome cognome dei clienti nati nel 1982
+SELECT nome,cognome, anno_di_nascita
+	FROM clienti where extract(year FROM clienti.anno_di_nascita) = 1982;
+-- estrai il numero di fatture con iva 20%
+SELECT COUNT(*) AS totale_fatture FROM fatture where iva = '20%';
+--estrai i prodotti attivati nel 2017 che sono in produzione o in commercio
+SELECT descrizione, data_attivazione, in_produzione, in_commercio 
+FROM prodotti where extract (year FROM prodotti.data_attivazione)= 2017
+and (prodotti.in_produzione > 0 or prodotti.in_commercio > 0);
+--estrai le fatture con importo inferiore a 1000 e i dati dei clienti ad esse collegate
+SELECT id_fattura, tipologia, importo , nome , cognome, anno_di_nascita 
+FROM fatture join clienti on fatture.id_cliente = clienti.id_cliente
+WHERE importo < 1000
+--riportare l'elenco delle fatture (numero , importo, iva e data) con l'aggiunta del nome del fornitore
+
+
