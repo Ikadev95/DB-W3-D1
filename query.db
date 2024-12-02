@@ -44,13 +44,15 @@ GROUP BY clienti.regione_residenza
 
 -- EXTRA Estrarre il numero dei clienti nati nel 1980 che hanno almeno una fattura superiore a 50 euro
 SELECT 
-    COUNT(DISTINCT c.id_cliente) AS numero_clienti
+    COUNT(DISTINCT clienti.id_cliente) AS numero_clienti
 FROM 
-    fatture f
+    fatture
 JOIN 
-    clienti c
+    clienti
 ON 
-    f.id_cliente = c.id_cliente
+    fatture.id_cliente = clienti.id_cliente
 WHERE 
-    EXTRACT(YEAR FROM c.anno_di_nascita) = 1980 
-    AND f.importo > 50;
+    EXTRACT(YEAR FROM clienti.anno_di_nascita) = 1980 
+    AND fatture.importo > 50;
+
+
