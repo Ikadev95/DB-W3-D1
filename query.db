@@ -26,9 +26,31 @@ FROM fatture join fornitori on fatture.id_fornitore = fornitori.id_fornitore;
 -- Considerando soltanto le fatture con iva al 20 per cento, estrarre il numero di fatture per ogni anno
 SELECT Extract (Year FROM data_fattura) AS anno,
     COUNT(*) AS numero_fatture FROM 
-    public.fatture where iva = '20%' GROUP BY Extract(Year FROM data_fattura) ORDER BY anno;
+    fatture where iva = '20%' GROUP BY Extract(Year FROM data_fattura) ORDER BY anno;
 
 --Riportare il numero di fatture e la somma dei relativi importi divisi per anno di fatturazione
 SELECT Extract(Year FROM data_fattura) as anno, COUNT(*) as numero_fatture,
-    SUM(importo) as somma_importi FROM public.fatture GROUP BY Extract (Year FROM data_fattura) ORDER BY anno;
+    SUM(importo) as somma_importi FROM fatture GROUP BY Extract (Year FROM data_fattura) ORDER BY anno;
 
+--(EXTRA) Estrarre gli anni in cui sono state registrate più di 2 fatture con tipologia 'A
+SELECT Extract(year FROM data_fattura) as anno
+FROM fatture WHERE tipologia = 'Acquisto'
+GROUP BY extract (year FROM data_fattura)
+Having count(*) > 2 order by anno
+
+--(EXTRA) Estrarre il totale degli importi delle fatture divisi per residenza dei clienti
+SELECT SUM(importo) as somma_importi, regione_residenza FROM fatture join clienti on fatture.id_cliente = clienti.id_cliente
+GROUP BY clienti.regione_residenza
+
+-- EXTRA Estrarre il numero dei clienti nati nel 1980 che hanno almeno una fattura superiore a 50 euro
+SELECT 
+    COUNT(DISTINCT c.id_cliente) AS numero_clienti
+FROM 
+    fatture f
+JOIN 
+    clienti c
+ON 
+    f.id_cliente = c.id_cliente
+WHERE 
+    EXTRACT(YEAR FROM c.anno_di_nascita) = 1980 
+    AND f.importo > 50;
